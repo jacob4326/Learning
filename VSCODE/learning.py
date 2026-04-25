@@ -90,6 +90,18 @@ while running:
             r_pressed = True
     else:
         r_pressed = False
+    # Create a button rectangle
+    button_rect = pygame.Rect(0, 900, 200, 50)
+    pygame.draw.rect(screen, (100, 0, 255), button_rect)
+    button_text = font.render("Hubert", True, (255, 255, 255))
+    screen.blit(button_text, (button_rect.x + 50, button_rect.y + 10))
+
+    # Check if button is clicked
+    mouse_pos = pygame.mouse.get_pos()
+    if button_rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
+        button_text = font.render("Hubert", True, (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
+        screen.blit(button_text, (button_rect.x + 50, button_rect.y + 10))
+    
     if image:
         screen.blit(image, (x + 50, y + 50))
     pygame.display.flip()#updates display
