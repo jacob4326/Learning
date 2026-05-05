@@ -9,7 +9,8 @@ fps = pygame.time.Clock()
 running = True
 x = 1700
 y = 1400
-font = pygame.font.SysFont(None, 36)
+font = pygame.font.SysFont(None, 100)
+button_clicked = False
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -21,13 +22,15 @@ while running:
         running = False
 
 
-    button_rect = pygame.Rect(400, 600, 200, 150)
+    button_rect = pygame.Rect(400, 600, 600, 150)
     pygame.draw.rect(screen, (125, 0, 0), button_rect)
     button_text = font.render("Play", True, (255, 255, 255))
     screen.blit(button_text, (button_rect.x + (button_rect.width//2) - (button_text.get_width()//2), button_rect.y + (button_rect.height//2) - (button_text.get_height()//2)))
 
-    if button_rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
-        print("Button clicked!")
+    if button_rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0] and not button_clicked:
+        button_clicked = True
+    elif not pygame.mouse.get_pressed()[0]:
+        button_clicked = False
 
     pygame.display.flip()
     fps.tick(60)
