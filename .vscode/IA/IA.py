@@ -20,24 +20,36 @@ class Attack:
         self.accuracy = accuracy
         self.type = type
 #Attacks
-frost_bolt= Attack("Frost Bolt", 90, 100, "Ice")
+frost_bolt= Attack("Frost Bolt", 90, 100, "Frost")
 grassy_horn= Attack("Grassy Horn", 110, 90, "Plant")
-rock_slam = Attack("Rock Slam", 80, 95, "Stone")
+rock_slam = Attack("Rock Slam", 105, 95, "Stone")
 shadow_bite = Attack("Shadow Bite", 90, 100, "Dark")
 fire_claw = Attack("Fire Claw", 100, 95, "Fire")
 water_beam = Attack("Water Beam", 90, 100, "Water")
 sand_tornado = Attack("Sand Tornado", 130, 70, "Sand")
+bite = Attack("Bite", 70, 100, "Plain")
+sun_blast = Attack("Sun Blast", 130, 70, "Fire")
+bubble_storm = Attack("Bubble Storm", 130, 70, "Water")
+forest_fury = Attack("Forest Fury", 130,70,"Plant")
+leafy_healing = Attack("Leafy Healing", 0, 100, "Plant")
+dust_storm = Attack("Dust Storm", 90, 100, "Sand")
+rest = Attack("Rest", 0, 100, "Plain")
+ice_lance = Attack("Ice Lance", 130, 70, "Frost")
+tail_smack = Attack("Tail Smack", 120, 80, "Plain")
+continental_tremor= Attack("Continental Tremor",160,60,"Stone")
+tree_slap = Attack("Tree Slap", 90, 100, "Plant")
+malicious_ambush= Attack("Malicious Ambush", 130, 70, "Dark")
 #Dinosaurs
-cryolophosaurus= Dinosaur("Cryolophosaurus", 105, 100, 75, 90, "Ice", frost_bolt,1,1,1)
-triceratops= Dinosaur("Triceratops", 140, 120, 100, 40, "Plant", grassy_horn,1,1,1)
-huaxiazhoulong = Dinosaur("Huaxiazhoulong", 125, 70, 120, 50, "Stone", rock_slam,1,1,1)
-koleken = Dinosaur("Koleken", 90, 120, 70, 100, "Plain",1,1,1,1)
-alamosaurus = Dinosaur("Alamosaurus", 160, 90, 90, 20, "Stone", rock_slam,1,1,1)
-yuanmouraptor = Dinosaur("Yuanmouraptor", 90, 110, 80, 120, "Dark", shadow_bite,1,1,1)
-erlikosaurus = Dinosaur("Erlikosaurus", 100, 140, 60, 70, "Fire", fire_claw,1,1,1)
-cetiosaurus = Dinosaur("Cetiosaurus", 150, 80, 100, 30, "Water", water_beam,1,1,1)
-concavenator = Dinosaur("Concavenator", 110, 90, 70, 100, "Sand", sand_tornado,1,1,1)
-austrosaurus = Dinosaur("Austrosaurus", 130, 80, 100, 40, "Plant",1,1,1,1)
+cryolophosaurus= Dinosaur("Cryolophosaurus", 105, 100, 75, 90, "Frost", frost_bolt,bite,rest,ice_lance)
+triceratops= Dinosaur("Triceratops", 140, 120, 100, 40, "Plant", grassy_horn,forest_fury,leafy_healing,tail_smack)
+huaxiazhoulong = Dinosaur("Huaxiazhoulong", 125, 70, 120, 50, "Stone", rock_slam,dust_storm,rest,tail_smack)
+koleken = Dinosaur("Koleken", 90, 120, 70, 100, "Plain",bite,rest,tail_smack,shadow_bite)
+alamosaurus = Dinosaur("Alamosaurus", 160, 90, 90, 20, "Stone", rock_slam,rest,tail_smack,continental_tremor)
+yuanmouraptor = Dinosaur("Yuanmouraptor", 90, 110, 80, 120, "Dark", shadow_bite,bite,rest,malicious_ambush)
+erlikosaurus = Dinosaur("Erlikosaurus", 100, 140, 60, 70, "Fire", fire_claw,sun_blast,rest,tail_smack)
+cetiosaurus = Dinosaur("Cetiosaurus", 150, 80, 100, 30, "Water", water_beam,bubble_storm,rest,tail_smack)
+concavenator = Dinosaur("Concavenator", 110, 90, 70, 100, "Sand", sand_tornado,bite,dust_storm,rest)
+austrosaurus = Dinosaur("Austrosaurus", 130, 80, 100, 40, "Plant",forest_fury,leafy_healing,tail_smack,tree_slap)
 dinos= [cryolophosaurus, triceratops, huaxiazhoulong, koleken, alamosaurus, yuanmouraptor, erlikosaurus, cetiosaurus, concavenator, austrosaurus]
 #player dinos
 player1_dinos=[]
@@ -45,17 +57,29 @@ player2_dinos=[]
 player1_active=1
 player2_active=1
 #Functions
-def attack(attack,defense,power,attack_type,accuracy,defense_type,defender_health):
-    damage = int((((42*power*(attack/defense))/50)+2))
-    if random.randint(1,100)> accuracy:
+def attack(attacker,defender,move):
+    #Damage Calc
+    damage = int((((42*move.power*(attacker.attack/defender.defense))/50)+2))
+    #Accuracy
+    if random.randint(1,100)> move.accuracy:
         damage = 0
         return print("Missed")
-    if attack_type == "Ice" and defense_type == "Plant":
+    #STAB
+    if attacker.type==move.type:
+        damage*=1.5
+    #Healing Moves
+    if move.name == "Rest":
+        attacker.health += 30
+    if move.name == "Leafy Healing":
+        attacker.health += 40
+    #Type Chart
+    if move.type == "Frost" and defender.type == "Plant":
         damage *= 2
-    elif attack_type == "Plant" and defense_type == "Ice":
+    elif move.type == "Plant" and defender.type == "Frost":
         damage *= 0.5
-    defender_health -= int(damage)
-    return print(f"It did {damage} damage, {defender_health} health remaining")
+    #Damage Dealt
+    defender.health -= int(damage)
+    return print(f"It did {damage} damage, {defender} has {defender.health} health remaining")
 #attack(cryolophosaurus.attack, triceratops.defense, frost_bolt.power, frost_bolt.type, frost_bolt.accuracy, triceratops.type, triceratops.health)
 def fight():
     print(f"{player1} choose your action:")
@@ -89,6 +113,7 @@ choice5= int(input(f"{player2}, enter the number of your second choice:"))
 player2_dinos.append(dinos[choice5-1])
 choice6= int(input(f"{player2}, enter the number of your third choice:"))
 player2_dinos.append(dinos[choice6-1])
+time.sleep(1)
 #Active Dino Picker
 print(f"{player1}, choose your active dinosaur:")
 for i in range(len(player1_dinos)):
