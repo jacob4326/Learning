@@ -79,7 +79,7 @@ def attack(attacker,defender,move):
         damage *= 0.5
     #Damage Dealt
     defender.health -= int(damage)
-    return print(f"It did {damage} damage, {defender} has {defender.health} health remaining")
+    return print(f"It did {damage} damage, {defender.name} has {defender.health} health remaining")
 #attack(cryolophosaurus.attack, triceratops.defense, frost_bolt.power, frost_bolt.type, frost_bolt.accuracy, triceratops.type, triceratops.health)
 def fight():
     print(f"{player1} choose your action:")
@@ -91,6 +91,9 @@ def fight():
         print(f"2.{player1_dinos[(player1_active-1)].move2.name}")
         print(f"3.{player1_dinos[(player1_active-1)].move3.name}")
         print(f"4.{player1_dinos[(player1_active-1)].move4.name}")
+        move_number = int(input(f"{player1} choose the number of the attack that {player1_dinos[(player1_active-1)].name} will use: "))
+        if move_number==1:
+            attack(player1_dinos[(player1_active-1)],player2_dinos[(player2_active-1)],player1_dinos[(player1_active-1)].move1)
 #Initial Start Up
 print("Welcome to the Dino Battle Simulator")
 player1=input(str("Player 1, what is your name? "))
