@@ -82,18 +82,35 @@ def attack(attacker,defender,move):
     return print(f"It did {damage} damage, {defender.name} has {defender.health} health remaining")
 #attack(cryolophosaurus.attack, triceratops.defense, frost_bolt.power, frost_bolt.type, frost_bolt.accuracy, triceratops.type, triceratops.health)
 def fight():
-    print(f"{player1} choose your action:")
-    action=int(input("1. Attack   2. Swap "))
-    if action==1:
-        print("Choose your attack:")
-        time.sleep(0.5)
-        print(f"1.{player1_dinos[(player1_active-1)].move1.name}")
-        print(f"2.{player1_dinos[(player1_active-1)].move2.name}")
-        print(f"3.{player1_dinos[(player1_active-1)].move3.name}")
-        print(f"4.{player1_dinos[(player1_active-1)].move4.name}")
-        move_number = int(input(f"{player1} choose the number of the attack that {player1_dinos[(player1_active-1)].name} will use: "))
-        if move_number==1:
-            attack(player1_dinos[(player1_active-1)],player2_dinos[(player2_active-1)],player1_dinos[(player1_active-1)].move1)
+    game="running"
+    while(game=="running"):
+        print(f"{player1} choose your action:")
+        action=int(input("1. Attack   2. Swap "))
+        if action==1:
+            print("Choose your attack:")
+            time.sleep(0.5)
+            print(f"1.{player1_dinos[(player1_active-1)].move1.name}")
+            print(f"2.{player1_dinos[(player1_active-1)].move2.name}")
+            print(f"3.{player1_dinos[(player1_active-1)].move3.name}")
+            print(f"4.{player1_dinos[(player1_active-1)].move4.name}")
+            move_number = int(input(f"{player1} choose the number of the attack that {player1_dinos[(player1_active-1)].name} will use: "))
+            if move_number==1:
+                attack(player1_dinos[(player1_active-1)],player2_dinos[(player2_active-1)],player1_dinos[(player1_active-1)].move1)
+            elif move_number==2:
+                attack(player1_dinos[(player1_active-1)],player2_dinos[(player2_active-1)],player1_dinos[(player1_active-1)].move2)
+            elif move_number==3:
+                attack(player1_dinos[(player1_active-1)],player2_dinos[(player2_active-1)],player1_dinos[(player1_active-1)].move3)
+            elif move_number==4:
+                attack(player1_dinos[(player1_active-1)],player2_dinos[(player2_active-1)],player1_dinos[(player1_active-1)].move4)
+        elif action==2:
+            count=1
+            print(f"{player1}, which dino will you switch in to:")
+            for i in range(len(player1_dinos)):
+                if (player1_dinos[player1_active-1].name != player1_dinos[i].name):
+                    print(f"{count}. {player1_dinos[i].name}")
+                    count+=1
+            time.sleep(0.5)
+            input(int(f"{player1}, enter the number of the dino to switch in to:"))
 #Initial Start Up
 print("Welcome to the Dino Battle Simulator")
 player1=input(str("Player 1, what is your name? "))
