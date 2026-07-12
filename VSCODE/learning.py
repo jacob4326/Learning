@@ -23,6 +23,7 @@ except pygame.error as e:
     print(f"Error loading image: {e}")
     image = None
 pygame.mixer.music.load('Fluffing-a-Duck(chosic.com).mp3')
+pygame.mixer.music.set_volume(0.2)
 pygame.mixer.music.play(-1)  # start background music once
 while running:
     for event in pygame.event.get():
