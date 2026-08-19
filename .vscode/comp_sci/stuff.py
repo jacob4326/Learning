@@ -3,14 +3,15 @@ dead=False
 speed = 20
 damageM = 1
 class Condition:
-    def __init__(self, name, speed_modifier, damage_multiplier):
+    def __init__(self, name, speed_modifier, damage_multiplier, time):
         self.name=name
         self.speed_modifier=speed_modifier
         self.damage_multiplier=damage_multiplier
+        self.time=time
 
-resistance= Condition("resistance", 1, 0.5)
-poisoned = Condition("poisoned", 0.5, 1)
-vulnerable = Condition("vulnerable", 1, 2)
+resistance= Condition("resistance", 1, 0.5, 30)
+poisoned = Condition("poisoned", 0.5, 1, 60)
+vulnerable = Condition("vulnerable", 1, 2, 15)
 current_conditions=[]
 
 def dead_check():
@@ -42,8 +43,19 @@ def add_condition(condition):
     if not in_stack:
         current_conditions.append(condition)
 
+def sort_conditions():
+    global current_conditions
+    for i in range(len(current_conditions)):
+        shortest = i
+        for j in range(i + 1, len(current_conditions)):
+            if current_conditions[j].time > current_conditions[shortest].time:
+                shortest = j
+        current_conditions[i], current_conditions[shortest] = current_conditions[shortest], current_conditions[i]
+    print(current_conditions[0].name, current_conditions[1].name, current_conditions[2].name)
+
 def remove_earliest_condition():
     global current_conditions
+    sort_conditions()
     if len(current_conditions)>=1:
      current_conditions.pop()
     else:
