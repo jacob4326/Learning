@@ -1,5 +1,6 @@
 import pygame
 import random
+import time as time
 pygame.init()
 pygame.display.set_caption("KSP")
 icon = pygame.image.load('Screenshot 2026-02-11 191744 - Copy.png')
@@ -16,6 +17,7 @@ v_pressed = False
 q_pressed = False
 o_pressed = False
 r_pressed = False
+
 lava_timer = pygame.USEREVENT + 1
 try:
     image = pygame.image.load('Screenshot 2026-02-11 191744 - Copy.png')
@@ -96,12 +98,16 @@ while running:
     pygame.draw.rect(screen, (100, 0, 255), button_rect)
     button_text = font.render("Hubert", True, (255, 255, 255))
     screen.blit(button_text, (button_rect.x + 50, button_rect.y + 10))
+    if keys[pygame.K_b]:
+        image = pygame.image.load('Screenshot 2026-05-18 212033.png')
+
 
     # Check if button is clicked
     mouse_pos = pygame.mouse.get_pos()
     if button_rect.collidepoint(mouse_pos) and pygame.mouse.get_pressed()[0]:
         button_text = font.render("Hubert", True, (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)))
         screen.blit(button_text, (button_rect.x + 50, button_rect.y + 10))
+        time.sleep(0.1)
     
     if image:
         screen.blit(image, (x + 50, y + 50))
